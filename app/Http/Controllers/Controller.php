@@ -15,8 +15,8 @@ class Controller extends BaseController
     {
 
 
-        dd();
         $data = DemoIdeaScore::all();
+        dd($data);
 
 
         return view('dashboard.top', compact('data'));
