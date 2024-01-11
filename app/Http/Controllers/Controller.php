@@ -6,6 +6,7 @@ use App\Models\DemoIdeaScore;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
 
 class Controller extends BaseController
 {
@@ -13,6 +14,13 @@ class Controller extends BaseController
 
     public function top()
     {
+
+        try {
+            DB::connection()->getPdo();
+            echo "Connected successfully to database.";
+        } catch (\Exception $e) {
+            die("Could not connect to the database. Error: " . $e->getMessage());
+        }
 
 
         $data = DemoIdeaScore::all();
