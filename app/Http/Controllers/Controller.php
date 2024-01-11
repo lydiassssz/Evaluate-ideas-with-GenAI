@@ -15,6 +15,7 @@ class Controller extends BaseController
     {
 
 
+        dd();
         $data = DemoIdeaScore::all();
 
 
