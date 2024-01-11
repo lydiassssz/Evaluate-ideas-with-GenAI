@@ -15,16 +15,11 @@ class Controller extends BaseController
     public function top()
     {
 
-        try {
-            DB::connection()->getPdo();
-            echo "Connected successfully to database.";
-        } catch (\Exception $e) {
-            die("Could not connect to the database. Error: " . $e->getMessage());
-        }
+
 
 
         $data = DemoIdeaScore::all();
-        dd($data);
+
 
 
         return view('dashboard.top', compact('data'));
