@@ -145,7 +145,7 @@ class ChatGptController extends Controller
 
 // Define data
         $data = array();
-        $data["model"] = "gpt-4";
+        $data["model"] = "gpt-3.5-turbo";
         $data["messages"] = $messages;
 
 
