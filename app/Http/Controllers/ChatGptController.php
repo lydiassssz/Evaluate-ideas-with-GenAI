@@ -59,11 +59,12 @@ class ChatGptController extends Controller
     }
 
 
-    public function observe_chatGPT($out_data, $id, $api_key){
+    public function observe_chatGPT($out_data, $id, $api_key)
+    {
 
         //openAI APIエンドポイント
         $endpoint = 'https://api.openai.com/v1/chat/completions';
-        $headers  = array(
+        $headers = array(
             'Content-Type: application/json',
             'Authorization: Bearer ' . $api_key
         );
@@ -156,10 +157,10 @@ class ChatGptController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        for($count=1; $count < 3; $count++){
+        for ($count = 1; $count < 3; $count++) {
             $response = curl_exec($ch);
             curl_close($ch);
-            $response =json_decode($response, true);
+            $response = json_decode($response, true);
             $res = $response['choices'][0]['message'];
             $res = $res['content'];
 
@@ -170,43 +171,18 @@ class ChatGptController extends Controller
             if ($matches) {
                 $res = $matches[0];
             }
-
-
-            dd($res);
-            try{
-                $res_data =  json_encode($res);
-                if($this->check_key_json($res_data)){
-                    $this->dict_res($res_data, $id);
-                    break;
-                }
-            } catch (\JsonException $e){
-                if($count===2){
+            try {
+                $res_data = json_encode($res);
+                $this->dict_res($res_data, $id);
+                break;
+            } catch (\JsonException $e) {
+                if ($count === 2) {
                     $res_data = "Error in converting to dictionary";
                     dd($res_data);
                 }
                 continue;
             }
         }
-    }
-
-    public function check_key_json($res_data): bool
-    {
-        // 必要なキー
-        $required_keys = ['Evidence', 'Impact', 'Possible', 'Score', 'Justification', 'Evaluation'];
-
-        // $res_dataが配列でない場合は即座にFalseを返す
-        if (!is_array($res_data)) {
-            return false;
-        }
-
-        // 必要なキーが全て存在するか確認
-        foreach ($required_keys as $key) {
-            if (!array_key_exists($key, $res_data)) {
-                return false;
-            }
-        }
-        // 上記の条件をすべてクリアしたらTrueを返す
-        return true;
     }
 
 }
