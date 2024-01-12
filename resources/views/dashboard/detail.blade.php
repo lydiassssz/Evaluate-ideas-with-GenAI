@@ -173,12 +173,25 @@
         const id = @json($data->id);
         const problem = '@json($data->problem)';
         const solution = '@json($data->solution)';
-        if (api_key){
-            window.location.href = '{{ route('chatGPT')}}?id=' + id + '&problem=' + problem + '&solution=' + solution + '&api_key=' + api_key;
+        if (api_key) {
+            // Ajaxリクエストを送信
+            fetch('{{ route('chatGPT')}}?id=' + id + '&problem=' + problem + '&solution=' + solution + '&api_key=' + api_key)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // データの処理を行う（例: データをコンソールに表示）
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         } else {
-            alert('API Key dosen\'t saved. Can you set in dashboard!');
+            alert('API Key doesn\'t saved. Can you set it in the dashboard!');
         }
-
     });
 
     // Cookieから値を取得する関数
