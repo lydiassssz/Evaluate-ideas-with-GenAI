@@ -55,7 +55,7 @@ class ChatGptController extends Controller
         } else {$data->possible = 7;
         }
         $data->possible_justification = $res_data['Possible']['Justification'];
-        $data->possible_detail = ['$res_data']['Possible']['Evaluation'];
+        $data->possible_detail = $res_data['Possible']['Evaluation'];
         $data->save();
 
         return redirect()->route('details', [ 'id' => $id]);
