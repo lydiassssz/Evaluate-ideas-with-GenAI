@@ -6,54 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 
-        /* ファイル選択ボタンのスタイル */
-        .file-input-container {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-input-button {
-            color: #fff;
-            background-color: #27acd9;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .file-input {
+        input {
             position: absolute;
-            font-size: 100px;
-            right: 0;
-            top: 0;
-            opacity: 0;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+
+        label {
+            position: relative;
+            background-color: royalblue;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.21);
+            border: solid 1px royalblue;
+            border-radius: 100px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #fff;
+            transition: all ease-in-out 0.1s;
             cursor: pointer;
         }
 
-        .file-input:hover + .file-input-button {
-            background-color: #1f82a6;
+        label:hover {
+            background-color: #5a7be0;
         }
 
-        input[type='file'] {
-            color: rgb(31, 41, 55);
-            cursor: pointer;
-            border: 1px solid rgb(191, 194, 199);
-            border-radius: 0.375rem;
-            padding-right: 0.5rem;
-            width: 24rem;
-        }
-
-        ::file-selector-button,
-        ::-webkit-file-upload-button {
-            background-color: rgb(209, 213, 219);
-            color: rgb(31, 41, 55);
-            border: none;
-            cursor: pointer;
-            border-right: 1px solid rgb(191, 194, 199);
-            padding: 0.25rem 1rem;
-            margin-right: 1rem;
+        /****** Base style. ******/
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
         }
 
         table {
@@ -134,12 +119,9 @@
     </style>
 </head>
 <body>
-    <div class="box">
-        <!-- ファイル選択ボタンのコンテナ -->
-        <label class="file-input-container">
-            <input type="file" id="csv-file" name="files" class="file-input">
-            <span class="file-input-button">Choose File</span>
-        </label>
+    <div>
+        <label for="upload">ファイルを選択</label>
+        <input id="upload" type="file" name="upload">
     </div>
 <table>
     <thead>
