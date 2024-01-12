@@ -188,6 +188,7 @@ class ChatGptController extends Controller
                 continue;
             }
         }
+        return redirect()->route('dashboard');
     }
 
 }
