@@ -67,7 +67,7 @@ class ChatGptController extends Controller
             'Content-Type: application/json',
             'Authorization: Bearer ' . $api_key
         );
-        dd(Storage::get('txt/prompt/gen01.txt'));
+        dd(Storage::get('gen01.txt'));
         $data = array(
             'model' => 'gpt-4',
             'messages' => ["role" => "system",
