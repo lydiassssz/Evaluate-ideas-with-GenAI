@@ -237,6 +237,7 @@
         // ファイル選択用のinput要素
         const fileInput = document.getElementById('upload');
         alert('csvファイルを読み込みますか？');
+        //todo ここから動作不明
 
         // 選択されたファイルが存在するか確認
         if (fileInput.files.length > 0) {

@@ -170,11 +170,11 @@
     document.getElementById('generateButton').addEventListener('click', function() {
         // データを使用してリダイレクト
         const api_key = getCookie('api_key');
-        const id = {{$data->id}};
-        const problem = {{$data->problem}};
-        const solution = {{$data->solution}};
+        const id = @json($data->id);
+        const problem = @json($data->problem);
+        const solution = @json($data->solution);
         if (api_key){
-            window.location.href = '{{ route('chatGPT')}}?id=${id}&problem=${problem}&solution=${solution}&api_key=${api_key}';
+            window.location.href = '{{ route('chatGPT')}}?id=' + id + '&problem=' + problem + '&solution=' + solution + '&api_key=' + api_key;
         } else {
             alert('API Key dosen\'t saved. Can you set in dashboard!');
         }
