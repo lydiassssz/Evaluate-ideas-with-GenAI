@@ -40,7 +40,7 @@ class ChatGptController extends Controller
     {
         if($res_data){
                 $data = DemoIdeaScore::find($id);
-                $data->evidence = $res_data['Evidence']['Score'];
+                $data->evidence = $res_data->Evidence->Score;
                 $data->evidence_justification = $res_data['Evidence']['Justification'];
                 $data->evidence_detail = $res_data['Evidence']['Evaluation'];
                 $data->impact = $res_data['Impact']['Score'];
