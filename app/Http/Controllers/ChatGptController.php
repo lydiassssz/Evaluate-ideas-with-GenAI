@@ -172,8 +172,7 @@ class ChatGptController extends Controller
                 $res = $matches[0];
             }
             try {
-                $res_data = json_encode($res);
-                $this->dict_res($res_data, $id);
+                $this->dict_res($res, $id);
                 break;
             } catch (\JsonException $e) {
                 if ($count === 2) {
