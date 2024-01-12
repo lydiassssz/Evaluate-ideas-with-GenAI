@@ -145,7 +145,7 @@ class ChatGptController extends Controller
 
 
         $data = array();
-        $data["model"] = "gpt-4";
+        $data["model"] = "gpt-3.5-turbo-0613";
         $data["messages"] = $messages;
 
 
@@ -156,7 +156,7 @@ class ChatGptController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        for($count=1; $count < 4; $count++){
+        for($count=1; $count < 3; $count++){
             $response = curl_exec($ch);
             $response =json_decode($response, true);
             $res = json_decode($response['choices'][0]['message'], true);
@@ -178,7 +178,7 @@ class ChatGptController extends Controller
                     break;
                 }
             } catch (\JsonException $e){
-                if($count===3){
+                if($count===2){
                     $res_data = "Error in converting to dictionary";
                     dd($res_data);
                 }
