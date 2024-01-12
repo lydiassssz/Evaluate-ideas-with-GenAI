@@ -39,6 +39,7 @@ class ChatGptController extends Controller
     public function dict_res($res_data, $id)
     {
 
+        dd($res_data);
         $data = DemoIdeaScore::find($id);
         if(isset($res_data['Evidence']['Score'])){
             $data->evidence = $res_data['Evidence']['Score'];
