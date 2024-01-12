@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DemoIdeaScore;
 use http\Header;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use mysql_xdevapi\Exception;
 use function Laravel\Prompts\text;
@@ -72,6 +73,7 @@ class ChatGptController extends Controller
                     "content" => Storage::get('txt/prompt/gen01.txt') . $out_data]);
 
 
+        dd($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
