@@ -161,6 +161,7 @@ class ChatGptController extends Controller
                 } catch (\JsonException $e){
                     if($count===3){
                         $res_data = "Error in converting to dictionary";
+                        dd($res_data);
                     }
                     continue;
                 }
@@ -195,12 +196,6 @@ class ChatGptController extends Controller
 
         // 上記の条件をすべてクリアしたらTrueを返す
         return true;
-    }
-
-
-    public function prompt_make($out_data, $id)
-    {
-
     }
 
 }
