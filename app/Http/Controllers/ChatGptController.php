@@ -159,7 +159,8 @@ class ChatGptController extends Controller
         for($count=1; $count < 4; $count++){
             $response = curl_exec($ch);
             $response =json_decode($response, true);
-            $res = json_decode($response['choices'][0]['message']['content'], true);
+            $res = json_decode($response['choices'][0]['message'], true);
+            $res = $res['content'];
 
             $pattern = '/{.*}/s';
 
