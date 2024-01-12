@@ -8,6 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class DemoIdeaScore extends Model
 {
     use HasFactory;
-    protected $table = 'id';
 
 }
