@@ -102,6 +102,7 @@
             <p>{{$data->evidence_justification}}</p>
             @if($data->evidence_detail)
                 @foreach (json_decode($data->evidence_detail) as $detail)
+                    <p>・{{ ver_dump($detail) }}</p>
                     <p>・{{ $detail }}</p>
                 @endforeach
             @endif
@@ -113,6 +114,8 @@
             <p>{{$data->possible_justification}}</p>
             @if($data->possible_detail)
                 @foreach (json_decode($data->possible_detail) as $detail)
+                    <p>・{{ ver_dump($detail) }}</p>
+                    <p>・{{ ver_dump($detail) }}</p>
                     <p>・{{ $detail }}</p>
                 @endforeach
             @endif
