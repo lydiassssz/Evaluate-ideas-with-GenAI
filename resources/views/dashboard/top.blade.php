@@ -3,6 +3,9 @@
 <head>
     <title>Dashboard</title>
     <style>
+
+
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -81,6 +84,11 @@
     </style>
 </head>
 <body>
+<div class="box">
+    <div class="file-upload_area">
+        <input type="file" id="csv-file" name="files" class="file-upload_input">
+    </div>
+</div>
 <table>
     <thead>
     <tr>
