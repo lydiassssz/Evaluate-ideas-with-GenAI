@@ -156,22 +156,21 @@ class ChatGptController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        for($count=1; $count < 2; $count++){
+        for($count=1; $count < 4; $count++){
             $response = curl_exec($ch);
-            if ($response){
-                try{
-                    $res_data =  json_encode($response);
-                    if($this->check_key_json($res_data)){
-                        $this->dict_res($res_data, $id);
-                        break;
-                    }
-                } catch (\JsonException $e){
-                    if($count===1){
-                        $res_data = "Error in converting to dictionary";
-                        dd($res_data);
-                    }
-                    continue;
+            dd($response);
+            try{
+                $res_data =  json_encode($response);
+                if($this->check_key_json($res_data)){
+                    $this->dict_res($res_data, $id);
+                    break;
                 }
+            } catch (\JsonException $e){
+                if($count===3){
+                    $res_data = "Error in converting to dictionary";
+                    dd($res_data);
+                }
+                continue;
             }
         }
     }
