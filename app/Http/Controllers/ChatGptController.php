@@ -75,7 +75,7 @@ class ChatGptController extends Controller
         }
         $data->save();
 
-        return redirect()->route('details', [ 'id' => $id]);
+        return redirect("https://calm-forest-15755-ef5b5d45533e.herokuapp.com/dashboard");
 
 
     }
@@ -205,7 +205,7 @@ class ChatGptController extends Controller
                 continue;
             }
         }
-        return redirect()->route('dashboard');
+        return redirect("https://calm-forest-15755-ef5b5d45533e.herokuapp.com/dashboard");
     }
 
 }
