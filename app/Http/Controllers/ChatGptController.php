@@ -63,6 +63,7 @@ class ChatGptController extends Controller
 
         //openAI APIエンドポイント
         $endpoint = 'https://api.openai.com/v1/chat/completions';
+        dd($api_key);
         $headers  = array(
             'Content-Type: application/json',
             'Authorization: Bearer ' . $api_key
@@ -70,7 +71,7 @@ class ChatGptController extends Controller
 
         $data = array(
             'model' => 'gpt-4',
-            'messages' => ["role" => "system",
+            'messages' => ["role" => "user",
                     "content" => "{\"I am an investor, and you are the expert advising me.\"
                                 \"You will act as an idea validator and support me.\"
                                 \"The role of an idea validator is to provide clear rationales and evaluations on fundamental metrics such as maturity, market potential, feasibility, scalability, technological innovation, and adherence to the principles of a circular economy, for the problems and solutions presented in an idea, thereby advising human evaluators.\"
