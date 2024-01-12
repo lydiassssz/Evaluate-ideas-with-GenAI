@@ -22,7 +22,7 @@
         }
 
         .dekkadekka{
-            padding: 12px;
+            padding: 40px;
         }
 
         label {
