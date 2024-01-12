@@ -145,7 +145,7 @@ class ChatGptController extends Controller
 
 // Define data
         $data = array();
-        $data["model"] = "gpt-3.5-turbo-0613";
+        $data["model"] = "gpt-4";
         $data["messages"] = $messages;
 
 
@@ -158,7 +158,6 @@ class ChatGptController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         for($count=1; $count < 4; $count++){
             $response = curl_exec($ch);
-            dd($response);
             try{
                 $res_data =  json_encode($response);
                 if($this->check_key_json($res_data)){
@@ -191,15 +190,6 @@ class ChatGptController extends Controller
                 return false;
             }
         }
-
-        // Scoreの値が1から10の範囲に収まっているか確認
-        if (array_key_exists('Score', $res_data)) {
-            $score_value = $res_data['Score'];
-            if (!is_numeric($score_value) || $score_value < 1 || $score_value > 10) {
-                return false;
-            }
-        }
-
         // 上記の条件をすべてクリアしたらTrueを返す
         return true;
     }
