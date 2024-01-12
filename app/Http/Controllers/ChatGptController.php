@@ -160,14 +160,10 @@ class ChatGptController extends Controller
             $response = curl_exec($ch);
             try{
                 $res_data =  json_encode($response);
-                if($this->check_key_json($res_data)){
-                    dd($res_data);
                     $this->dict_res($res_data, $id);
                     break;
                 }
-                dd($this->check_key_json($res_data));
-            } catch (\JsonException $e){
-                dd($count);
+             catch (\JsonException $e){
                 if($count===3){
                     $res_data = "Error in converting to dictionary";
                     dd($res_data);
@@ -175,20 +171,6 @@ class ChatGptController extends Controller
                 continue;
             }
         }
-    }
-
-    public function check_key_json($res_data): bool
-    {
-
-        // 必要なキー
-        $required_keys = ['Evidence', 'Impact', 'Possible', 'Score', 'Justification', 'Evaluation'];
-
-        // $res_dataが配列でない場合は即座にFalseを返す
-        if (!is_array($res_data)) {
-            return false;
-        }
-        // 上記の条件をすべてクリアしたらTrueを返す
-        return true;
     }
 
 }
