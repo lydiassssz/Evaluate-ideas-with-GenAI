@@ -41,33 +41,15 @@ class ChatGptController extends Controller
         if($res_data){
             if (empty($res_data['error'])) {
                 $data = DemoIdeaScore::find($id);
-                if($res_data['Evidence']['Score']){
-                    $data->evidence = $res_data['Evidence']['Score'];
-                }
-                if($res_data['Evidence']['Justification']) {
-                    $data->evidence_justification = $res_data['Evidence']['Justification'];
-                }
-                if($res_data['Evidence']['Evaluation']) {
-                    $data->evidence_detail = $res_data['Evidence']['Evaluation'];
-                }
-                if($res_data['Impact']['Score']) {
-                    $data->impact = $res_data['Impact']['Score'];
-                }
-                if($res_data['Impact']['Justification']) {
-                    $data->impact_justification = $res_data['Impact']['Justification'];
-                }
-                if($res_data['Impact']['Evaluation']) {
-                    $data->impact_detail = $res_data['Impact']['Evaluation'];
-                }
-                if($res_data['Possible']['Score']) {
-                    $data->possible = $res_data['Possible']['Score'];
-                }
-                if($res_data['Possible']['Justification']) {
-                    $data->possible_justification = $res_data['Possible']['Justification'];
-                }
-                if($res_data['Possible']['Evaluation']) {
-                    $data->possible_detail = $res_data['Possible']['Evaluation'];
-                }
+                $data->evidence = $res_data['Evidence']['Score'];
+                $data->evidence_justification = $res_data['Evidence']['Justification'];
+                $data->evidence_detail = $res_data['Evidence']['Evaluation'];
+                $data->impact = $res_data['Impact']['Score'];
+                $data->impact_justification = $res_data['Impact']['Justification'];
+                $data->impact_detail = $res_data['Impact']['Evaluation'];
+                $data->possible = $res_data['Possible']['Score'];
+                $data->possible_justification = $res_data['Possible']['Justification'];
+                $data->possible_detail = $res_data['Possible']['Evaluation'];
 
                 $data->save();
 
@@ -161,7 +143,7 @@ class ChatGptController extends Controller
                                 \"]}}" . $out_data;
         $messages[] = $message;
 
-// Define data
+
         $data = array();
         $data["model"] = "gpt-4";
         $data["messages"] = $messages;
@@ -174,16 +156,27 @@ class ChatGptController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
         for($count=1; $count < 4; $count++){
             $response = curl_exec($ch);
-            dd($response);
+            $res = $response['choices'][0]['message'];
+            $res = json_decode($res, true)['content'];
+
+            $pattern = '/{.*}/s';
+
+            preg_match($pattern, $res, $matches);
+
+            if ($matches) {
+                $res = $matches[0];
+            }
+
+
             try{
-                $res_data =  json_encode($response);
+                $res_data =  json_encode($res);
+                if($this->check_key_json($res_data)){
                     $this->dict_res($res_data, $id);
                     break;
                 }
-             catch (\JsonException $e){
+            } catch (\JsonException $e){
                 if($count===3){
                     $res_data = "Error in converting to dictionary";
                     dd($res_data);
@@ -191,6 +184,26 @@ class ChatGptController extends Controller
                 continue;
             }
         }
+    }
+
+    public function check_key_json($res_data): bool
+    {
+        // 必要なキー
+        $required_keys = ['Evidence', 'Impact', 'Possible', 'Score', 'Justification', 'Evaluation'];
+
+        // $res_dataが配列でない場合は即座にFalseを返す
+        if (!is_array($res_data)) {
+            return false;
+        }
+
+        // 必要なキーが全て存在するか確認
+        foreach ($required_keys as $key) {
+            if (!array_key_exists($key, $res_data)) {
+                return false;
+            }
+        }
+        // 上記の条件をすべてクリアしたらTrueを返す
+        return true;
     }
 
 }
