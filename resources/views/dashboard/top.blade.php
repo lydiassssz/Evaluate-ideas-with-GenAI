@@ -95,7 +95,7 @@
 
         button.api-key-button{
             position: absolute;
-            margin-left: 70px;
+            margin-left: 200px;
 
         }
 
