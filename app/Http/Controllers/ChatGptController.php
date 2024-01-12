@@ -172,6 +172,7 @@ class ChatGptController extends Controller
             }
 
 
+            dd($res);
             try{
                 $res_data =  json_encode($res);
                 if($this->check_key_json($res_data)){
