@@ -21,6 +21,10 @@
             right: 0;
         }
 
+        .dekkadekka{
+            padding: 12px;
+        }
+
         label {
             position: relative;
             background-color: royalblue;
@@ -124,7 +128,7 @@
     </style>
 </head>
 <body>
-    <div>
+    <div class="dekkadekka">
         <label for="upload" class="top_button">ファイルを選択</label>
         <input id="upload" type="file" name="upload" class="top_button">
     </div>
