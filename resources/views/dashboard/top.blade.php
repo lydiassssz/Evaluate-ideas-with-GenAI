@@ -6,6 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 
+        /* ChatGPT APIキー入力部分のスタイル */
+        .api-key-container {
+            margin: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .api-key-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .api-key-button {
+            background-color: #27acd9;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .api-key-button:hover {
+            background-color: #1f82a6;
+        }
+
         input {
             position: absolute;
             width: 1px;
@@ -130,7 +159,13 @@
 </head>
 <body>
     <div class="dekkadekka">
-        <label for="upload" class="top_button">ファイルを選択</label>
+        <!-- ChatGPT APIキー入力部分 -->
+        <div class="api-key-container">
+            <input type="text" id="api-key-input" class="api-key-input" placeholder="Enter ChatGPT API Key">
+            <button onclick="saveApiKey()" class="api-key-button">Save</button>
+        </div>
+
+        <label for="upload" class="top_button">upload:csv</label>
         <input id="upload" type="file" name="upload" class="top_button">
     </div>
 <table>
@@ -184,7 +219,29 @@
         // ソート後の行をテーブルに追加
         sortedRows.forEach(row => tbody.appendChild(row));
     }
+
+    function uploadCSV() {
+        // ここにCSVアップロードの処理を追加する
+        // ファイルの内容を取得してデータに追加するなどの処理を行う
+    }
+
+    function reloadPage() {
+        location.reload(); // 画面をリロード
+    }
+
+    function saveApiKey() {
+        // ここにAPIキーを保存する処理を追加する
+        const apiKeyInput = document.getElementById('api-key-input');
+        const apiKey = apiKeyInput.value.trim();
+
+        // 保存処理などを行う（例えばCookieに保存するなど）
+
+        alert('API Key saved successfully!');
+    }
+
 </script>
 
 </body>
+
+
 </html>
