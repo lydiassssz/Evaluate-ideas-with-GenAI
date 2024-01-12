@@ -1,66 +1,194 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# README
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Idea Evaluation Tool
 
-## About Laravel
+This tool facilitates the evaluation of individual ideas and assigns prioritization to a vast array of ideas. The evaluation is based on three custom-specified criteria:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Evidence:** Indicates the scientific basis.
+- **Acceptance:** Gauges societal acceptance.
+- **Impact:** Measures environmental impact.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Dashboard
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+On the main screen, a dashboard displays all Problems and Solutions, including their total scores, Evidence Score, Acceptance Score, and Impact Score.
 
-## Learning Laravel
+### Usage
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Input table data containing Problems and Solutions in a CSV file.
+2. Select the desired ideas.
+3. Open the detailed view.
+4. Click the Generate button to utilize ChatGPT for generating and outputting a numerical Score (on a 1 to 10 scale), Justification, and Evaluation.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Output Format
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+While the Score is a numerical value on a 10-point scale, both the Justification and Evaluation are in text format, with the Evaluation being presented in a bulleted list.
 
-## Laravel Sponsors
+## ChatGptController in Laravel
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+This is a Laravel controller named `ChatGptController` responsible for handling requests related to the ChatGPT integration. The controller includes methods for generating prompts, sending instructions to ChatGPT, and saving responses to the database.
 
-### Premium Partners
+### `generate_sen` Method
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+This method is responsible for sending generation instructions to ChatGPT based on the provided input. It validates the incoming request, extracts relevant data (such as ID, problem, and solution), and then generates a prompt for ChatGPT.
 
-## Contributing
+```php
+public function generate_sen(Request $request)
+{
+    // Validation
+    $request->validate([
+        'id' => 'required',
+        'problem' => 'required',
+        'solution' => 'required',
+    ]);
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    // Extract data
+    $id = $request->input('id');
+    $problem = '"' . $request->input('problem') . '"';
+    $solution = '"' . $request->input('solution') . '"';
 
-## Code of Conduct
+    // Create prompt
+    $out_data = "{'problem' : " . $problem . ", 'solution' : " . $solution . "}";
+    $out_data = str_replace("\n", '', $out_data);
+    $this->prompt_make($out_data, $id);
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### `dict_res` Method
 
-## Security Vulnerabilities
+This method handles the response received from ChatGPT, saves relevant data to the database, and redirects to the details page.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```php
+public function dict_res($outputs, $id)
+{
+    if ($outputs[0]) {
+        // Process response
+        $response = Storage::get('generated_data.txt');
+        try {
+            $responseData = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+            if (empty($responseData['error'])) {
+                // Save data to the database
+                $data = DemoIdeaScore::find($id);
+                // ... (update database fields based on response)
 
-## License
+                $data->save();
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+                // Redirect to details page
+                return redirect()->route('details', ['id' => $id]);
+            }
+            // todo: Handle ChatGPT errors
+        } catch (\JsonException $e) {
+        }
+    }
+}
+```
+
+### `prompt_make` Method
+
+This method is currently empty and might be intended for further implementation. Additional details or implementation instructions can be added here.
+
+```php
+public function prompt_make($out_data, $id)
+{
+    // Implementation details go here
+}
+```
+
+## Controller in Laravel
+
+This Laravel controller, named `Controller`, serves as the base controller for handling requests related to the application. It includes methods for rendering views and accessing data from the `DemoIdeaScore` model.
+
+### `top`Methods
+
+This method fetches all data from the `DemoIdeaScore` model and passes it to the `dashboard.top` view.
+
+```php
+public function top()
+{
+    $data = DemoIdeaScore::all();
+    return view('dashboard.top', compact('data'));
+}
+```
+
+## DemoIdeaScore in Laravel
+
+This is a Laravel model named `DemoIdeaScore` representing an entity within your application. It extends the `Model` class and uses the `HasFactory` trait.
+
+### Purpose
+
+The `DemoIdeaScore` model is likely used to interact with a database table, providing an Eloquent representation of the data associated with a specific entity.
+
+### Usage
+
+In Laravel, models play a crucial role in interacting with databases, and they typically represent a table in the database. While the provided code for `DemoIdeaScore` is minimal, you can extend it by defining attributes, relationships, and other Eloquent features.
+
+#### Example
+
+```php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class DemoIdeaScore extends Model
+{
+    use HasFactory;
+
+    // Define table attributes, relationships, etc.
+}
+```
+
+## Relationships
+
+If DemoIdeaScore has relationships with other models, you can define them within the model class.
+
+### Example
+
+class DemoIdeaScore extends Model
+
+```php
+{
+    use HasFactory;
+
+    public function relatedModel()
+    {
+        return $this->hasOne(RelatedModel::class);
+    }
+}
+```
+
+## UserFactory
+
+The UserFactory class is a Laravel Eloquent model factory responsible for generating fake data for the User model. It uses the Faker library to generate random and realistic data.
+
+### Usage
+
+This factory is used to seed the database with sample user data. You can customize the data generated by modifying the definition method in the UserFactory class.
+
+```php
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+class UserFactory extends Factory
+{
+    protected static ?string $password;
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
+        ];
+    }
+
+    public function unverified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ]);
+    }
+}
+```
