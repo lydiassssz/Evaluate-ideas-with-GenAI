@@ -2,9 +2,59 @@
 <html>
 <head>
     <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 
+        /* ファイル選択ボタンのスタイル */
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
 
+        .file-input-button {
+            color: #fff;
+            background-color: #27acd9;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .file-input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input:hover + .file-input-button {
+            background-color: #1f82a6;
+        }
+
+        input[type='file'] {
+            color: rgb(31, 41, 55);
+            cursor: pointer;
+            border: 1px solid rgb(191, 194, 199);
+            border-radius: 0.375rem;
+            padding-right: 0.5rem;
+            width: 24rem;
+        }
+
+        ::file-selector-button,
+        ::-webkit-file-upload-button {
+            background-color: rgb(209, 213, 219);
+            color: rgb(31, 41, 55);
+            border: none;
+            cursor: pointer;
+            border-right: 1px solid rgb(191, 194, 199);
+            padding: 0.25rem 1rem;
+            margin-right: 1rem;
+        }
 
         table {
             border-collapse: collapse;
@@ -84,11 +134,13 @@
     </style>
 </head>
 <body>
-<div class="box">
-    <div class="file-upload_area">
-        <input type="file" id="csv-file" name="files" class="file-upload_input">
+    <div class="box">
+        <!-- ファイル選択ボタンのコンテナ -->
+        <label class="file-input-container">
+            <input type="file" id="csv-file" name="files" class="file-input">
+            <span class="file-input-button">Choose File</span>
+        </label>
     </div>
-</div>
 <table>
     <thead>
     <tr>
