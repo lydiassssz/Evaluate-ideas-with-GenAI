@@ -246,9 +246,31 @@
         const apiKeyInput = document.getElementById('api-key-input');
         const apiKey = apiKeyInput.value.trim();
 
-        // 保存処理などを行う（例えばCookieに保存するなど）
+        // Cookieに保存
+        setCookie('api_key', apiKey, 365);
 
-        alert('API Key saved successfully!張りぼてだからねこれ');
+        alert('API Key saved successfully!');
+    }
+
+    // Cookieを設定する関数
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    // Cookieから値を取得する関数
+    function getCookie(name) {
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookies = decodedCookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.indexOf(name + '=') === 0) {
+                return cookie.substring((name + '=').length, cookie.length);
+            }
+        }
+        return null;
     }
 
 </script>
