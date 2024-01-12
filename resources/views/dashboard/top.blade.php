@@ -234,8 +234,74 @@
     }
 
     function uploadCSV() {
-        // ここにCSVアップロードの処理を追加する
-        // ファイルの内容を取得してデータに追加するなどの処理を行う
+        // ファイル選択用のinput要素
+        const fileInput = document.getElementById('upload');
+
+        // 選択されたファイルが存在するか確認
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            // ファイル読み込み完了時の処理
+            reader.onload = function (e) {
+                // 読み込んだCSVデータを取得
+                const csvData = e.target.result;
+
+                // CSVデータを改行ごとに分割
+                const rows = csvData.split('\n');
+
+                // 各行のデータを処理
+                for (const row of rows) {
+                    // カンマでデータを分割
+                    const columns = row.split(',');
+
+                    // 必要な要素があるか確認
+                    if (columns.length >= 3) {
+                        const id = columns[0].trim();
+                        const problem = columns[1].trim();
+                        const solution = columns[2].trim();
+
+                        // サーバーにデータを送信
+                        sendCSVDataToServer(id, problem, solution);
+                    }
+                }
+            };
+
+            // ファイルをテキストとして読み込む
+            reader.readAsText(file);
+        } else {
+            alert('ファイルが選択されていません。');
+        }
+    }
+
+    // サーバーにデータを送信する関数
+    function sendCSVDataToServer(id, problem, solution) {
+        // ここでAjaxなどを使用してサーバーにデータを送信する処理を追加
+        // 例えば、fetchを使用する場合は以下のようになる可能性があります
+        fetch('/save_csv', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                id: id,
+                problem: problem,
+                solution: solution
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
     }
 
     function reloadPage() {
