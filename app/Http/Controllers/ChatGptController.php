@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Storage;
 class ChatGptController extends Controller
 {
 
-    public function dict_res(Request $request)
+
+    //chatGPTに生成命令を送る処理
+    public function generate_sen(Request $request)
     {
         // バリデーション
         $request->validate([
@@ -25,13 +27,13 @@ class ChatGptController extends Controller
 
         $out_data = "{'problem' : " . $problem . ", 'solution' : " . $solution . "}";
         $out_data =  str_replace("\n", '', $out_data);
-        Storage::put('dict.txt', $out_data);
-        $pythonPath =  "..\python\genAI.py";
-        $out_path =  "C:\Users\m323s\PhpstormProjects\Dashboard-for-evaluate-ideas-with-GenAI\Dashboard\storage\app\dict.txt";
+        $this->prompt_make($out_data, $id);
+    }
 
-        $command = 'python ' . $pythonPath. ' "' . $out_path . '"';
-        // コマンドを実行
-        exec($command, $outputs);
+    //レスポンスをデータベースに保存して元ページにリダイレクト
+    public function dict_res($outputs, $id)
+    {
+
         if($outputs[0]){
             $response = Storage::get('generated_data.txt');
             try {
@@ -55,8 +57,14 @@ class ChatGptController extends Controller
                 //todo chatGPTがエラーを返した場合の処理記述
             } catch (\JsonException $e) {
             }
+        }
     }
 
 
+
+    public function prompt_make($out_data, $id)
+    {
+
     }
+
 }
