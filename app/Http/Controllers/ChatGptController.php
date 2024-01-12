@@ -176,6 +176,7 @@ class ChatGptController extends Controller
 
     public function check_key_json($res_data): bool
     {
+        dd($res_data);
         // 必要なキー
         $required_keys = ['Evidence', 'Impact', 'Possible', 'Score', 'Justification', 'Evaluation'];
 
