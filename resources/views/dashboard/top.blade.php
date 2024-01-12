@@ -13,6 +13,12 @@
             overflow: hidden;
             clip: rect(1px, 1px, 1px, 1px);
         }
+        .top_button{
+            margin: 20px;
+            display: flex;
+            justify-content: flex-end;
+
+        }
 
         label {
             position: relative;
@@ -117,7 +123,7 @@
     </style>
 </head>
 <body>
-    <div>
+    <div class="top_button">
         <label for="upload">ファイルを選択</label>
         <input id="upload" type="file" name="upload">
     </div>
