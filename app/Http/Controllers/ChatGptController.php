@@ -168,7 +168,6 @@ class ChatGptController extends Controller
             $pattern = '/{.*}/s';
 
             preg_match($pattern, $res, $matches);
-            dd($matches);
 
             if ($matches) {
                 $res = $matches[0];
