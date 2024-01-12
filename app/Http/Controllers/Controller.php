@@ -25,7 +25,6 @@ class Controller extends BaseController
     public function page($id)
     {
         $data = DemoIdeaScore::find($id);
-        dd($data);
         return view('dashboard.detail', compact('data'));
     }
 
