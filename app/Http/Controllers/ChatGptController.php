@@ -7,6 +7,7 @@ use http\Header;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use mysql_xdevapi\Exception;
+use function Laravel\Prompts\text;
 
 class ChatGptController extends Controller
 {
@@ -67,17 +68,8 @@ class ChatGptController extends Controller
         );
         $data = array(
             'model' => 'gpt-4',
-            'messages' => [
-                [
-                    "role" => "system",
-                    "content" => "日本語で応答してください"
-                ],
-                [
-                    "role" => "user",
-                    "content" => $req_question
-                ]
-            ]
-        );
+            'messages' => ["role" => "system",
+                    "content" => Storage::get('txt/prompt/gen01.txt') . $out_data]);
 
 
         $ch = curl_init();
