@@ -41,22 +41,38 @@ class ChatGptController extends Controller
 
 
         $data = DemoIdeaScore::find($id);
-        if(isset($res_data['Evidence']['Score'])){
+        if (isset($res_data['Evidence']['Score'])) {
             $data->evidence = $res_data['Evidence']['Score'];
-        } else {$data->evidence = 7; }
-        $data->evidence_justification = $res_data['Evidence']['Justification'];
-        $data->evidence_detail = $res_data['Evidence']['Evaluation'];
-        if(isset($res_data['Impact']['Score'])){
+        } else {
+            $data->evidence = 7;
+        }
+        if (isset($res_data['Evidence']['Justification'])) {
+            $data->evidence_justification = $res_data['Evidence']['Justification'];
+        }
+        if (isset($res_data['Evidence']['Evaluation'])) {
+            $data->evidence_detail = $res_data['Evidence']['Evaluation'];
+        }
+        if (isset($res_data['Impact']['Score'])) {
             $data->impact = $res_data['Impact']['Score'];
-        } else {$data->impact = 7; }
-        $data->impact_justification = $res_data['Impact']['Justification'];
-        $data->impact_detail = $res_data['Impact']['Evaluation'];
+        } else {
+            $data->impact = 7;
+        }
+        if (isset($res_data['Impact']['Justification'])) {
+            $data->impact_justification = $res_data['Impact']['Justification'];
+        }
+        if(isset($res_data['Impact']['Evaluation'])) {
+            $data->impact_detail = $res_data['Impact']['Evaluation'];
+        }
         if(isset($res_data->Possible->Score)) {
             $data->possible = $res_data['Possible']['Score'];
         } else {$data->possible = 7;
         }
-        $data->possible_justification = $res_data['Possible']['Justification'];
-        $data->possible_detail = $res_data['Possible']['Evaluation'];
+        if(isset($res_data['Possible']['Justification'])){
+            $data->possible_justification = $res_data['Possible']['Justification'];
+        }
+        if(isset($res_data['Possible']['Evaluation'])) {
+            $data->possible_detail = $res_data['Possible']['Evaluation'];
+        }
         $data->save();
 
         return redirect()->route('details', [ 'id' => $id]);
