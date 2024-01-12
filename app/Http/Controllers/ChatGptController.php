@@ -68,10 +68,21 @@ class ChatGptController extends Controller
             'Authorization: Bearer ' . $api_key
         );
 
-        $data = array(
-            'model' => 'gpt-4',
-            'messages' => ["role" => "system",
-                        "content" => "こんにちは、セクシーな声ですね"]);
+        $messages = array();
+        $message = array();
+        $message["role"] = "system";
+        $message["content"] = "Hello future overlord!";
+        $messages[] = $message;
+
+// Define data
+        $data = array();
+        $data["model"] = "gpt-3.5-turbo";
+        $data["messages"] = $messages;
+
+//        $data = array(
+//            'model' => 'gpt-4',
+//            'messages' => ["role" => "system",
+//                        "content" => "こんにちは、セクシーな声ですね"]);
 //                    "content" => "{\"I am an investor, and you are the expert advising me.\"
 //                                \"You will act as an idea validator and support me.\"
 //                                \"The role of an idea validator is to provide clear rationales and evaluations on fundamental metrics such as maturity, market potential, feasibility, scalability, technological innovation, and adherence to the principles of a circular economy, for the problems and solutions presented in an idea, thereby advising human evaluators.\"
