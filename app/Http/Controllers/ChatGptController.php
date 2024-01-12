@@ -184,7 +184,6 @@ class ChatGptController extends Controller
             } catch (\JsonException $e) {
                 if ($count === 2) {
                     $res_data = "Error in converting to dictionary";
-                    dd($res_data);
                 }
                 continue;
             }
