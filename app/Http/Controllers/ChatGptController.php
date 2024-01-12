@@ -50,7 +50,7 @@ class ChatGptController extends Controller
         $data->possible_justification = $res_data->Possible->Justification;
         $data->possible_detail = $res_data->Possible->Evaluation;
         $data->save();
-        dd($data);
+
 
         return view('dashboard.detail', compact('data'));
 
