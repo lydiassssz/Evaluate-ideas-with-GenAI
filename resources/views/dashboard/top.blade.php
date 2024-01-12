@@ -35,7 +35,12 @@
             background-color: #1f82a6;
         }
 
-        input {
+        input.api-key-input{
+            position: absolute;
+            overflow: hidden;
+        }
+
+        input.top_button {
             position: absolute;
             width: 1px;
             height: 1px;
@@ -52,7 +57,8 @@
         }
 
         .dekkadekka{
-            padding: 40px;
+            padding: 20px;
+            width: 100%;
         }
 
         label {
