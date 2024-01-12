@@ -101,7 +101,7 @@
             <h2>Evidence Detail</h2>
             <p>{{$data->evidence_justification}}</p>
             @if($data->evidence_detail)
-
+                <p>{{$data->evidence_detail}}</p>
 {{--                @foreach (json_decode($data->evidence_detail) as $detail)--}}
 {{--                    <p>・{{ ver_dump($detail) }}</p>--}}
 {{--                    <p>・{{ $detail }}</p>--}}
@@ -114,7 +114,7 @@
             <h2>Acceptance Detail</h2>
             <p>{{$data->possible_justification}}</p>
             @if($data->possible_detail)
-                <p>{{$data->evidence_detail}}</p>
+                <p>{{$data->possible_detail}}</p>
 {{--                @foreach (json_decode($data->possible_detail) as $detail)--}}
 {{--                    <p>・{{ ver_dump($detail) }}</p>--}}
 {{--                    <p>・{{ ver_dump($detail) }}</p>--}}
@@ -127,7 +127,7 @@
             <h2>Impact Detail</h2>
             <p>{{$data->impact_justification}}</p>
             @if($data->impact_detail)
-                <p>{{$data->evidence_detail}}</p>
+                <p>{{$data->impact_detail}}</p>
 {{--                @foreach (json_decode($data->impact_detail) as $detail)--}}
 {{--                    <p>・{{ $detail }}</p>--}}
 {{--                @endforeach--}}
