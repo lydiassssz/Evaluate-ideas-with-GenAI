@@ -162,6 +162,7 @@ class ChatGptController extends Controller
                 try{
                     $res_data =  json_encode($response);
                     if($this->check_key_json($res_data)){
+                        dd($res_data);
                         $this->dict_res($res_data, $id);
                         break;
                     }
