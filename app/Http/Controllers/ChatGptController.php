@@ -51,8 +51,7 @@ class ChatGptController extends Controller
         $data->possible_detail = $res_data->Possible->Evaluation;
         $data->save();
 
-
-        return view('dashboard.detail', compact('data'));
+        redirect()->Route('page',compact('data'));
 
 
     }
