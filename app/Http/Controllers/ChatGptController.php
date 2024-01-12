@@ -18,6 +18,7 @@ class ChatGptController extends Controller
             'id' => 'required',
             'problem' => 'required',
             'solution' => 'required',
+            'api_key' => 'required',
         ]);
 
         // 文章

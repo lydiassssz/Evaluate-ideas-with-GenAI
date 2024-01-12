@@ -130,7 +130,7 @@
                 @endforeach
             @endif
         </div>
-        <button id="generateButton" class="back-button" onclick="window.location.href='{{ route('chatGPT', ['id' => $data->id , 'problem' => $data->problem , 'solution' => $data->solution]) }}';">Generate</button>
+        <button id="generateButton" class="back-button" onclick="">Generate</button>
     </div>
 </div>
 
@@ -166,6 +166,34 @@
         data: data,
         options: options
     });
+
+    document.getElementById('generateButton').addEventListener('click', function() {
+        // データを使用してリダイレクト
+        const api_key = getCookie('api_key');
+        const id = {{$data->id}};
+        const problem = {{$data->problem}};
+        const solution = {{$data->solution}};
+        if (api_key){
+            window.location.href = '{{ route('chatGPT')}}?id=${id}&problem=${problem}&solution=${solution}&api_key=${api_key}';
+        } else {
+            alert('API Key dosen\'t saved. Can you set in dashboard!');
+        }
+
+    });
+
+    // Cookieから値を取得する関数
+    function getCookie(name) {
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookies = decodedCookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.indexOf(name + '=') === 0) {
+                return cookie.substring((name + '=').length, cookie.length);
+            }
+        }
+        return null;
+    }
+
 </script>
 
 </body>
