@@ -242,7 +242,7 @@
 
         // 保存処理などを行う（例えばCookieに保存するなど）
 
-        alert('API Key saved successfully!');
+        alert('API Key saved successfully!張りぼてだからねこれ');
     }
 
 </script>
