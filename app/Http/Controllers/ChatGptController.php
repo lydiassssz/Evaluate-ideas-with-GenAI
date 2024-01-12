@@ -52,7 +52,7 @@ class ChatGptController extends Controller
 
                 $data->save();
 
-                return redirect()->route('details', ['id' => $id]);
+                return view('dashboard.detail', compact('data'));
 
         }
     }
