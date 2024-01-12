@@ -187,13 +187,6 @@ class ChatGptController extends Controller
         if (!is_array($res_data)) {
             return false;
         }
-
-        // 必要なキーが全て存在するか確認
-        foreach ($required_keys as $key) {
-            if (!array_key_exists($key, $res_data)) {
-                return false;
-            }
-        }
         // 上記の条件をすべてクリアしたらTrueを返す
         return true;
     }
