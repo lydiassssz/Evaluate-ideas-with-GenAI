@@ -39,7 +39,6 @@ class ChatGptController extends Controller
     public function dict_res($res_data, $id)
     {
         if($res_data){
-            if (empty($res_data['error'])) {
                 $data = DemoIdeaScore::find($id);
                 $data->evidence = $res_data['Evidence']['Score'];
                 $data->evidence_justification = $res_data['Evidence']['Justification'];
@@ -54,7 +53,7 @@ class ChatGptController extends Controller
                 $data->save();
 
                 return redirect()->route('details', ['id' => $id]);
-            }
+
         }
     }
 
