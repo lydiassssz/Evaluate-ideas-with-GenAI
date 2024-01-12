@@ -175,7 +175,7 @@
             <input type="text" id="api-key-input" class="api-key-input" placeholder="Enter ChatGPT API Key">
             <button onclick="saveApiKey()" class="api-key-button">Save</button>
             <label for="upload" class="top_button">upload:csv</label>
-            <input id="upload" type="file" name="upload" class="top_button">
+            <input id="upload" type="file" name="upload" class="top_button" onchange="uploadCSV()">
         </div>
 
 
@@ -236,6 +236,7 @@
     function uploadCSV() {
         // ファイル選択用のinput要素
         const fileInput = document.getElementById('upload');
+        alert('csvファイルを読み込みますか？');
 
         // 選択されたファイルが存在するか確認
         if (fileInput.files.length > 0) {
