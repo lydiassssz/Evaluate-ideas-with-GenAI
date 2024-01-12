@@ -163,6 +163,7 @@ class ChatGptController extends Controller
 //            $response = json_decode($response, true);
 //            $res = $response['choices'][0]['message'];
 //            $res = $res['content'];
+//            $res = json_encode($res);
             $res = '{"Evidence": {"Score": 7, "Justification": "The idea of using old tea bags as compost for soil is scientifically feasible and has been widely recognized as an effective method for improving soil quality.", "Evaluation": ["Using tea bags as compost can enrich the soil with organic matter, improving its fertility and nutrient content.", "Numerous studies have shown that compost made from tea leaves can increase soil moisture retention and enhance microbial activity, leading to healthier plants and increased crop yields.", "Tea leaves contain various beneficial compounds that can contribute to soil health, such as antioxidants and polyphenols.", "The decomposition of tea bags in the soil releases essential nutrients, such as nitrogen, phosphorus, and potassium, which are vital for plant growth."]}, "Impact": {"Score": 9, "Justification": "The idea of using old tea bags as compost for soil has significant positive environmental impacts and promotes sustainability.", "Evaluation": ["By diverting used tea bags from landfills and utilizing them as compost, it reduces waste and contributes to a circular economy.", "Tea bags can improve soil structure and promote water filtration, reducing the risk of soil erosion and water pollution.", "Using tea bags as compost reduces the need for synthetic fertilizers, which can have negative environmental impacts, such as nutrient runoff and soil degradation.", "The improved soil fertility and moisture retention from tea bag compost can enhance plant growth and resilience, leading to increased carbon sequestration and biodiversity."]}, "Possible": {"Score": 8, "Justification": "The idea of using old tea bags as compost for soil has good market potential and is likely to be accepted by society.", "Evaluation": ["There is a growing trend and demand for sustainable gardening practices, including the use of organic compost.", "Many gardeners and home growers are already using tea bags as compost and have experienced positive results.", "Using tea bags as compost aligns with the principles of organic and eco-friendly gardening, making it appealing to environmentally conscious consumers.", "With proper education and marketing, the idea can be effectively promoted and embraced by the gardening community."]}}';
 
             $pattern = '/{.*}/s';
@@ -173,6 +174,7 @@ class ChatGptController extends Controller
                 $res = $matches[0];
             }
             try {
+                $res = json_decode($res);
                 $this->dict_res($res, $id);
                 break;
             } catch (\JsonException $e) {
