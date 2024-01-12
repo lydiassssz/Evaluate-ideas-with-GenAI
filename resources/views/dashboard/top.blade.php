@@ -48,9 +48,8 @@
             clip: rect(1px, 1px, 1px, 1px);
         }
         .top_button{
-            margin: 10px;
+            margin: 0;
             display: flex;
-            top: 10px;
             justify-content: flex-end;
             position: absolute;
             right: 0;
