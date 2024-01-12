@@ -145,7 +145,7 @@ class ChatGptController extends Controller
 
 // Define data
         $data = array();
-        $data["model"] = "gpt-3.5-turbo";
+        $data["model"] = "gpt-4";
         $data["messages"] = $messages;
 
 
@@ -166,7 +166,7 @@ class ChatGptController extends Controller
                         break;
                     }
                 } catch (\JsonException $e){
-                    if($count===3){
+                    if($count===2){
                         $res_data = "Error in converting to dictionary";
                         dd($res_data);
                     }
