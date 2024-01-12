@@ -93,6 +93,12 @@
             width: 100%;
         }
 
+        button.api-key-button{
+            position: absolute;
+            margin-left: 70px;
+
+        }
+
         button.btn_03 {
             text-align: center;
             vertical-align: middle;
