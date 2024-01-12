@@ -16,6 +16,7 @@
         .top_button{
             margin: 10px;
             display: flex;
+            top: 10px;
             justify-content: flex-end;
             position: absolute;
             right: 0;
