@@ -26,6 +26,7 @@
             color: #fff;
             transition: all ease-in-out 0.1s;
             cursor: pointer;
+            margin-bottom: 20px; /* ボタン下のマージンを追加 */
         }
 
         label:hover {
@@ -35,21 +36,14 @@
         /****** Base style. ******/
         body {
             display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column; /* 縦に並べるように変更 */
+            align-items: center; /* 中央寄せ */
             margin: 0;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
         }
 
         button.btn_03 {
@@ -61,16 +55,13 @@
             color: #27acd9;
             border-radius: 100vh;
             transition: 0.5s;
-            margin-bottom: 10px; /* 絞り込みボタンの下のマージンを追加 */
+            margin-bottom: 10px;
+            align-self: flex-end; /* ボタンを右寄せに変更 */
         }
 
         button.btn_03:hover {
             color: #fff;
             background: #27acd9;
-        }
-
-        .filter-button { /* 絞り込みボタンのスタイル */
-            margin-left: auto; /* 右に寄せるためのスタイル */
         }
 
         th, td {
@@ -83,6 +74,27 @@
             background-color: #f2f2f2;
         }
 
+        /* リンクスタイルは省略 */
+
+        tbody tr:nth-child(odd) {
+            background-color: #ffffcc;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        tbody tr:hover {
+            background-color: #f7f7f7;
+        }
+
+        .table-cell {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         /* リンクスタイル */
         a {
             color: blue;
@@ -92,20 +104,6 @@
 
         a:hover {
             color: darkblue;
-        }
-
-        /* 行ごとの色を設定 */
-        tbody tr:nth-child(odd) {
-            background-color: #ffffcc; /* 薄い黄色 */
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #ffffff; /* 白色 */
-        }
-
-        /* ホバー時の色を設定 */
-        tbody tr:hover {
-            background-color: #f7f7f7; /* グレー */
         }
 
         /* テーブルセルのスタイル */
