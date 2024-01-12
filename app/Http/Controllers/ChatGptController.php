@@ -41,7 +41,7 @@ class ChatGptController extends Controller
         if($res_data){
             if (empty($res_data['error'])) {
                 $data = DemoIdeaScore::find($id);
-                if(is_array($res_data['Evidence']['Score'])){
+                if($res_data['Evidence']['Score']){
                     $data->evidence = $res_data['Evidence']['Score'];
                 }
                 if($res_data['Evidence']['Justification']) {
@@ -174,8 +174,10 @@ class ChatGptController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
         for($count=1; $count < 4; $count++){
             $response = curl_exec($ch);
+            dd($response);
             try{
                 $res_data =  json_encode($response);
                     $this->dict_res($res_data, $id);
