@@ -171,8 +171,8 @@
         // データを使用してリダイレクト
         const api_key = getCookie('api_key');
         const id = @json($data->id);
-        const problem = @json($data->problem);
-        const solution = @json($data->solution);
+        const problem = '@json($data->problem)';
+        const solution = '@json($data->solution)';
         if (api_key){
             window.location.href = '{{ route('chatGPT')}}?id=' + id + '&problem=' + problem + '&solution=' + solution + '&api_key=' + api_key;
         } else {
