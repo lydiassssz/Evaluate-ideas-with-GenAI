@@ -51,7 +51,7 @@ class ChatGptController extends Controller
         $data->possible_detail = $res_data->Possible->Evaluation;
         $data->save();
 
-        redirect()->Route('page',compact('data'));
+        redirect()->Route('details',compact('data'));
 
 
     }
