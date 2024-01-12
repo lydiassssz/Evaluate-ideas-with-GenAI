@@ -14,10 +14,11 @@
             clip: rect(1px, 1px, 1px, 1px);
         }
         .top_button{
-            margin: 20px;
+            margin: 10px;
             display: flex;
             justify-content: flex-end;
-
+            position: absolute;
+            right: 0;
         }
 
         label {
@@ -123,9 +124,9 @@
     </style>
 </head>
 <body>
-    <div class="top_button">
-        <label for="upload">ファイルを選択</label>
-        <input id="upload" type="file" name="upload">
+    <div>
+        <label for="upload" class="top_button">ファイルを選択</label>
+        <input id="upload" type="file" name="upload" class="top_button">
     </div>
 <table>
     <thead>
