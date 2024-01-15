@@ -157,10 +157,11 @@ class ChatGptController extends Controller
 
             $this->dict_res($res, $id);
 
-            return redirect()->route('details', [ 'id' => $id]);
+            return response()->json(['status' => 'success', 'message' => 'GPT made new massages']);
 
         }
-        return redirect()->route('dashboard');
+        return response()->json(['status' => 'failure', 'message' => 'GPT can\'t make new massages. something wrong.']);
+
     }
 
 
@@ -173,10 +174,7 @@ class ChatGptController extends Controller
 
         $data = DemoIdeaScore::find($id);
         if (isset($res_data['Evidence']['Score'])) {
-            Log::alert("編集前");
-            Log::alert($data->evidence);
             $data->evidence = $res_data['Evidence']['Score'];
-            Log::alert("編集後");
             Log::alert($data->evidence);
         } else {
             $data->evidence = 0;

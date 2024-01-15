@@ -135,12 +135,12 @@
 </div>
 
 <script>
-    // データ（適当なサンプルデータ）
+    // データ
     const data = {
         labels: ['Evidence', 'Impact', 'Possible'],
         datasets: [{
             label: 'Scores',
-            data: [{{ $data->evidence }}, {{ $data->impact }}, {{ $data->possible }}], // 仮のデータ（0から10の範囲）
+            data: [{{ $data->evidence }}, {{ $data->impact }}, {{ $data->possible }}],
             backgroundColor: 'rgba(39, 172, 217, 0.2)',
             borderColor: 'rgba(39, 172, 217, 1)',
             borderWidth: 2
@@ -173,10 +173,30 @@
         const id = @json($data->id);
         const problem = '@json($data->problem)';
         const solution = '@json($data->solution)';
-        if (api_key){
-            window.location.href = '{{ route('chatGPT')}}?id=' + id + '&problem=' + problem + '&solution=' + solution + '&api_key=' + api_key;
+
+        // スピナーモーダル表示
+        alert('button to start generation. It takes about 10 to 20 seconds to finish'); // モーダルライブラリやCSSを使用することが推奨されます
+
+        if (api_key) {
+            // Ajaxリクエストを送信
+            fetch('{{ route('chatGPT')}}?id=' + id + '&problem=' + problem + '&solution=' + solution + '&api_key=' + api_key)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log(response);
+                    // スピナーモーダル非表示
+                    alert('Response received!'); // モーダルライブラリやCSSを使用することが推奨されます
+                    // ページをリロード
+                    window.location.reload();
+
+
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         } else {
-            alert('API Key dosen\'t saved. Can you set in dashboard!');
+            alert('API Key doesn\'t saved. Can you set it in the dashboard!');
         }
     });
 
