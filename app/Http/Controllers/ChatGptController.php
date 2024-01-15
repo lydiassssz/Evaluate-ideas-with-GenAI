@@ -211,7 +211,6 @@ class ChatGptController extends Controller
 
 
         $data->save();
-        dd($data);
     }
 
 }
