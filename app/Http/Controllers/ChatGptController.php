@@ -171,8 +171,6 @@ class ChatGptController extends Controller
         $res_data = str_replace('\\', '', $res_data);
         $res_data = json_decode($res_data,True);
 
-        dd($res_data);
-
         $data = DemoIdeaScore::find($id);
         if (isset($res_data['Evidence']['Score'])) {
             $data->evidence = $res_data['Evidence']['Score'];
@@ -206,10 +204,10 @@ class ChatGptController extends Controller
         if(isset($res_data['Possible']['Evaluation'])) {
             $data->possible_detail = $res_data['Possible']['Evaluation'];
         }
+
+
         $data->save();
-
-
-
+        dd($data);
     }
 
 }
