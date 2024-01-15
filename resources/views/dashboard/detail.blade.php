@@ -79,6 +79,7 @@
     </style>
 </head>
 <body>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="container">
     <button class="back-button" onclick="window.location.href='{{ route('dashboard') }}';">◀</button>
     <div class="left-section">
@@ -174,12 +175,26 @@
         const problem = '@json($data->problem)';
         const solution = '@json($data->solution)';
 
+
         // スピナーモーダル表示
         alert('button to start generation. It takes about 10 to 20 seconds to finish'); // モーダルライブラリやCSSを使用することが推奨されます
 
         if (api_key) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             // Ajaxリクエストを送信
-            fetch('{{ route('chatGPT')}}?id=' + id + '&problem=' + problem + '&solution=' + solution + '&api_key=' + api_key)
+            fetch('{{ route('chatGPT')}}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    id: id,
+                    problem: problem,
+                    solution: solution,
+                    api_key: api_key,
+                }),
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -189,7 +204,7 @@
                     alert('Response received!'); // モーダルライブラリやCSSを使用することが推奨されます
                     // ページをリロード
                     window.location.reload();
-
+                    return response.text();
 
                 })
                 .catch(error => {
