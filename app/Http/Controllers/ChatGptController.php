@@ -169,6 +169,7 @@ class ChatGptController extends Controller
 
         $res_data = str_replace('\n', '', $res_data);
         $res_data = str_replace('\\', '', $res_data);
+        dd($res_data);
 
         $res_data = json_decode($res_data,True);
 
