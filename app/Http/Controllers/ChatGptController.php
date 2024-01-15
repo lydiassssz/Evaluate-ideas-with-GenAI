@@ -173,7 +173,11 @@ class ChatGptController extends Controller
 
         $data = DemoIdeaScore::find($id);
         if (isset($res_data['Evidence']['Score'])) {
+            Log::alert("編集前");
+            Log::alert($data->evidence);
             $data->evidence = $res_data['Evidence']['Score'];
+            Log::alert("編集後");
+            Log::alert($data->evidence);
         } else {
             $data->evidence = 0;
         }
