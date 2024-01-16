@@ -288,50 +288,50 @@
     function sendBulkCSVDataToServer(dataArray) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '{{ route('save_csv')}}';
-        form.style.display = 'none';
+        {{--const form = document.createElement('form');--}}
+        {{--form.method = 'POST';--}}
+        {{--form.action = '{{ route('save_csv')}}';--}}
+        {{--form.style.display = 'none';--}}
 
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = '_token';
-        csrfInput.value = csrfToken;
+        {{--const csrfInput = document.createElement('input');--}}
+        {{--csrfInput.type = 'hidden';--}}
+        {{--csrfInput.name = '_token';--}}
+        {{--csrfInput.value = csrfToken;--}}
 
-        const dataInput = document.createElement('input');
-        dataInput.type = 'hidden';
-        dataInput.name = 'data';
-        dataInput.value = JSON.stringify(dataArray);
+        {{--const dataInput = document.createElement('input');--}}
+        {{--dataInput.type = 'hidden';--}}
+        {{--dataInput.name = 'data';--}}
+        {{--dataInput.value = JSON.stringify(dataArray);--}}
 
-        form.appendChild(csrfInput);
-        form.appendChild(dataInput);
-        document.body.appendChild(form);
+        {{--form.appendChild(csrfInput);--}}
+        {{--form.appendChild(dataInput);--}}
+        {{--document.body.appendChild(form);--}}
 
-        form.submit();
+        {{--form.submit();--}}
 
-        {{--fetch('{{ route('save_csv')}}', {--}}
-        {{--    method: 'POST',--}}
-        {{--    headers: {--}}
-        {{--        'Content-Type': 'application/json',--}}
-        {{--        'X-CSRF-TOKEN': csrfToken--}}
-        {{--    },--}}
-        {{--    body: JSON.stringify({--}}
-        {{--        data: JSON.stringify(dataArray)--}}
-        {{--    })--}}
-        {{--})--}}
-        {{--    .then(response => {--}}
-        {{--        if (!response.ok) {--}}
-        {{--            throw new Error(`HTTP error! status: ${response.status}`);--}}
-        {{--        }--}}
-        {{--        return response.json();--}}
-        {{--    })--}}
-        {{--    .then(data => {--}}
-        {{--        console.log('Bulk data sent successfully:', data);--}}
-        {{--        reloadPage()--}}
-        {{--    })--}}
-        {{--    .catch(error => {--}}
-        {{--        console.error('Error sending bulk data:', error);--}}
-        {{--    });--}}
+        fetch('{{ route('save_csv')}}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                data: JSON.stringify(dataArray)
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Bulk data sent successfully:', data);
+                reloadPage()
+            })
+            .catch(error => {
+                console.error('Error sending bulk data:', error);
+            });
     }
 
     function reloadPage() {
