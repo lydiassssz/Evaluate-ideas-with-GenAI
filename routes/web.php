@@ -24,4 +24,5 @@ Route::get('/details/{id}', [\App\Http\Controllers\Controller::class, 'page'])->
 Route::get('/chatGPT',[\App\Http\Controllers\ChatGptController::class, 'generate_sen'])->name('chatGPT');
 Route::post('/chatGPT',[\App\Http\Controllers\ChatGptController::class, 'generate_sen'])->name('chatGPT');
 
+Route::get('/csv',[\App\Http\Controllers\CsvController::class, 'save_csv'])->name('save_csv');
 Route::post('/csv',[\App\Http\Controllers\CsvController::class, 'save_csv'])->name('save_csv');

@@ -7,20 +7,30 @@ use Illuminate\Http\Request;
 
 class CsvController extends Controller
 {
+
+
+    public function test(){
+        return view('test');
+    }
     public function save_csv(Request $request){
-        // バリデーション
+
+
         $request->validate([
-            'id' => 'required'
+            'data.*.id' => 'required',
+            'data.*.problem' => 'required',
+            'data.*.solution' => 'required',
         ]);
 
-        $ids = $request->input('id');
-        $problems = $request->input('problem');
-        $solutions = $request->input('solution');
+        $datas = $request->input('data');
 
-        foreach([$ids, $problems, $solutions] as [$id, $problem, $solution]){
-            $content = DemoIdeaScore::create([$id, $problem, $solution])->save();
+        $datas = json_decode($datas,true);
+
+        DemoIdeaScore::truncate();
+        // データベースへの一括挿入
+        foreach ($datas['data'] as $data){
+            DemoIdeaScore::Create($data);
         }
 
-        return redirect('dashboard');
+        return response()->json(['message' => 'CSV data saved successfully'], 200);
     }
 }

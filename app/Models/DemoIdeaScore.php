@@ -9,4 +9,6 @@ class DemoIdeaScore extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
 }

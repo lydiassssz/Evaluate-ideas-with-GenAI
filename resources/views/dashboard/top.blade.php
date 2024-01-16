@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Dashboard</title>
+    <script src="{{ asset('js/papaparse.min.js') }}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -169,6 +170,7 @@
     </style>
 </head>
 <body>
+<meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="dekkadekka">
         <!-- ChatGPT APIキー入力部分 -->
         <div class="api-key-container">
@@ -214,6 +216,8 @@
     </tbody>
 </table>
 <script>
+
+
     function sortTable(colIndex) {
         const table = document.querySelector('table');
         const tbody = table.querySelector('tbody');
@@ -233,77 +237,101 @@
         sortedRows.forEach(row => tbody.appendChild(row));
     }
 
+
+
+
     function uploadCSV() {
         // ファイル選択用のinput要素
         const fileInput = document.getElementById('upload');
         alert('csvファイルを読み込みますか？');
-        //todo ここから動作不明
 
         // 選択されたファイルが存在するか確認
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
-            const reader = new FileReader();
 
-            // ファイル読み込み完了時の処理
-            reader.onload = function (e) {
-                // 読み込んだCSVデータを取得
-                const csvData = e.target.result;
-
-                // CSVデータを改行ごとに分割
-                const rows = csvData.split('\n');
-
-                // 各行のデータを処理
-                for (const row of rows) {
-                    // カンマでデータを分割
-                    const columns = row.split(',');
-
-                    // 必要な要素があるか確認
-                    if (columns.length >= 3) {
-                        const id = columns[0].trim();
-                        const problem = columns[1].trim();
-                        const solution = columns[2].trim();
-
-                        // サーバーにデータを送信
-                        sendCSVDataToServer(id, problem, solution);
-                    }
-                }
-            };
-
-            // ファイルをテキストとして読み込む
-            reader.readAsText(file);
+            // CSVデータを処理
+            handleCSV(file);
         } else {
             alert('ファイルが選択されていません。');
         }
+
     }
 
-    // サーバーにデータを送信する関数
-    function sendCSVDataToServer(id, problem, solution) {
-        // ここでAjaxなどを使用してサーバーにデータを送信する処理を追加
-        // 例えば、fetchを使用する場合は以下のようになる可能性があります
-        fetch('/save_csv', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                id: id,
-                problem: problem,
-                solution: solution
-            })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+    // ファイルを処理する関数
+    function handleCSV(file) {
+        // FileReaderを作成
+        const reader = new FileReader();
+
+        // ファイル読み込み完了時の処理
+        reader.onload = function (e) {
+            // 読み込んだCSVデータを取得
+            const csvData = e.target.result;
+
+            // ここでPapa Parseなどを使ってCSVデータを処理する
+            Papa.parse(csvData, {
+                header: true,
+                complete: function(results) {
+                    // まとめてサーバーに送信
+                    sendBulkCSVDataToServer(results);
+                },
+                error: function(error) {
+                    console.error(error.message);
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Data sent successfully:', data);
-            })
-            .catch(error => {
-                console.error('Error sending data:', error);
             });
+        };
+
+        // ファイルをテキストとして読み込む
+        reader.readAsText(file);
+    }
+
+
+    function sendBulkCSVDataToServer(dataArray) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route('save_csv')}}';
+        form.style.display = 'none';
+
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = csrfToken;
+
+        const dataInput = document.createElement('input');
+        dataInput.type = 'hidden';
+        dataInput.name = 'data';
+        dataInput.value = JSON.stringify(dataArray);
+
+        form.appendChild(csrfInput);
+        form.appendChild(dataInput);
+        document.body.appendChild(form);
+
+        form.submit();
+
+        {{--fetch('{{ route('save_csv')}}', {--}}
+        {{--    method: 'POST',--}}
+        {{--    headers: {--}}
+        {{--        'Content-Type': 'application/json',--}}
+        {{--        'X-CSRF-TOKEN': csrfToken--}}
+        {{--    },--}}
+        {{--    body: JSON.stringify({--}}
+        {{--        data: JSON.stringify(dataArray)--}}
+        {{--    })--}}
+        {{--})--}}
+        {{--    .then(response => {--}}
+        {{--        if (!response.ok) {--}}
+        {{--            throw new Error(`HTTP error! status: ${response.status}`);--}}
+        {{--        }--}}
+        {{--        return response.json();--}}
+        {{--    })--}}
+        {{--    .then(data => {--}}
+        {{--        console.log('Bulk data sent successfully:', data);--}}
+        {{--        reloadPage()--}}
+        {{--    })--}}
+        {{--    .catch(error => {--}}
+        {{--        console.error('Error sending bulk data:', error);--}}
+        {{--    });--}}
     }
 
     function reloadPage() {
@@ -341,6 +369,7 @@
         }
         return null;
     }
+
 
 </script>
 
