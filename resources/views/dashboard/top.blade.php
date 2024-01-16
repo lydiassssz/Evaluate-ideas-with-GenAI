@@ -194,8 +194,8 @@
     <div class="dekkadekka">
         <!-- ChatGPT APIキー入力部分 -->
         <div class="api-key-container">
-            <input type="text" id="api-key-input" class="api-key-input" placeholder="(No need.)Enter ChatGPT API Key">
-            <button onclick="saveApiKey()" class="api-key-button">Save</button>
+{{--            <input type="text" id="api-key-input" class="api-key-input" placeholder="(No need.)Enter ChatGPT API Key">--}}
+{{--            <button onclick="saveApiKey()" class="api-key-button">Save</button>--}}
             <label for="upload" class="top_button">upload:csv</label>
             <input id="upload" type="file" name="upload" class="top_button" onchange="uploadCSV()">
         </div>
