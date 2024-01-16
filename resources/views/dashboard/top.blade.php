@@ -167,6 +167,26 @@
             white-space: nowrap; /* テキストを折り返さないように設定 */
         }
 
+        th button::after {
+            content: ' ▼';
+            color: transparent;
+        }
+
+        th.sorted-up button::after {
+            content: ' ▲';
+            color: transparent;
+        }
+
+        th.sorted-down button::after {
+            content: ' ▼';
+            color: transparent;
+        }
+
+        th.sorted-up button:hover::after,
+        th.sorted-down button:hover::after {
+            color: #000;
+        }
+
     </style>
 </head>
 <body>
@@ -189,9 +209,10 @@
         <th>Problem</th>
         <th>Solution</th>
         <th><button onclick="sortTable(3)">Sum</button></th>
-        <th><button onclick="sortTable(4)">Evidence</button></th>
-        <th><button onclick="sortTable(6)">Acceptance</button></th>
-        <th><button onclick="sortTable(5)">Impact</button></th>
+        <th class="sortable" ><button onclick="sortTable(4)">Evidence</button></th>
+        <th class="sortable"><button  onclick="sortTable(5)">Acceptance</button></th>
+        <th class="sortable"><button onclick="sortTable(6)">Impact</button></th>
+        <th>Note</th>
 
         <th>Note</th>
     </tr>
@@ -211,34 +232,48 @@
         </tr>
     @endforeach
 
-
     <!-- データ行は実際のデータを使って動的に生成することが推奨されます -->
     </tbody>
 </table>
 <script>
 
+    let lastSortedColumnIndex = -1;
+    let isAscending = false;
 
     function sortTable(colIndex) {
         const table = document.querySelector('table');
         const tbody = table.querySelector('tbody');
         const rows = Array.from(tbody.querySelectorAll('tr'));
 
-        // ソートする際の比較関数
         const comparator = (a, b) => {
             const aContent = a.children[colIndex].textContent;
             const bContent = b.children[colIndex].textContent;
-            return bContent.localeCompare(aContent, undefined, { numeric: true, sensitivity: 'base' });
+            return isAscending ? aContent.localeCompare(bContent, undefined, { numeric: true, sensitivity: 'base' }) :
+                bContent.localeCompare(aContent, undefined, { numeric: true, sensitivity: 'base' });
         };
 
-        // ソート実行
         const sortedRows = rows.sort(comparator);
 
-        // ソート後の行をテーブルに追加
+        tbody.innerHTML = '';
         sortedRows.forEach(row => tbody.appendChild(row));
+
+        updateSortIndicator(colIndex);
     }
 
+    function updateSortIndicator(colIndex) {
+        const headers = document.querySelectorAll('th button');
+        headers.forEach((header, index) => {
+            if (index === colIndex) {
+                header.parentNode.classList.toggle('sorted-up', isAscending);
+                header.parentNode.classList.toggle('sorted-down', !isAscending);
+            } else {
+                header.parentNode.classList.remove('sorted-up', 'sorted-down');
+            }
+        });
 
-
+        lastSortedColumnIndex = colIndex;
+        isAscending = !isAscending;
+    }
 
     function uploadCSV() {
         // ファイル選択用のinput要素
@@ -287,28 +322,6 @@
 
     function sendBulkCSVDataToServer(dataArray) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        {{--const form = document.createElement('form');--}}
-        {{--form.method = 'POST';--}}
-        {{--form.action = '{{ route('save_csv')}}';--}}
-        {{--form.style.display = 'none';--}}
-
-        {{--const csrfInput = document.createElement('input');--}}
-        {{--csrfInput.type = 'hidden';--}}
-        {{--csrfInput.name = '_token';--}}
-        {{--csrfInput.value = csrfToken;--}}
-
-        {{--const dataInput = document.createElement('input');--}}
-        {{--dataInput.type = 'hidden';--}}
-        {{--dataInput.name = 'data';--}}
-        {{--dataInput.value = JSON.stringify(dataArray);--}}
-
-        {{--form.appendChild(csrfInput);--}}
-        {{--form.appendChild(dataInput);--}}
-        {{--document.body.appendChild(form);--}}
-
-        {{--form.submit();--}}
-
         fetch('{{ route('save_csv')}}', {
             method: 'POST',
             headers: {
