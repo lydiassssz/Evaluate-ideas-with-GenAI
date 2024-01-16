@@ -21,10 +21,9 @@ class ChatGptController extends Controller
             'id' => 'required',
             'problem' => 'required',
             'solution' => 'required',
-            'api_key' => 'required',
         ]);
 
-        $api_key = $request->input('api_key');
+        $api_key = env('API_KEY');
 
         // 文章
         $id = $request->input('id');
@@ -42,7 +41,6 @@ class ChatGptController extends Controller
 
     public function observe_chatGPT($out_data, $id, $api_key)
     {
-
         //openAI APIエンドポイント
         $endpoint = 'https://api.openai.com/v1/chat/completions';
         $headers = array(

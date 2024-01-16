@@ -170,7 +170,7 @@
 
     document.getElementById('generateButton').addEventListener('click', function() {
         // データを使用してリダイレクト
-        const api_key = getCookie('api_key');
+
         const id = @json($data->id);
         const problem = '@json($data->problem)';
         const solution = '@json($data->solution)';
@@ -179,40 +179,35 @@
         // スピナーモーダル表示
         alert('button to start generation. It takes about 10 to 20 seconds to finish'); // モーダルライブラリやCSSを使用することが推奨されます
 
-        if (api_key) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            // Ajaxリクエストを送信
-            fetch('{{ route('chatGPT')}}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify({
-                    id: id,
-                    problem: problem,
-                    solution: solution,
-                    api_key: api_key,
-                }),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    console.log(response);
-                    // スピナーモーダル非表示
-                    alert('Response received!'); // モーダルライブラリやCSSを使用することが推奨されます
-                    // ページをリロード
-                    window.location.reload();
-                    return response.text();
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        // Ajaxリクエストを送信
+        fetch('{{ route('chatGPT')}}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({
+                id: id,
+                problem: problem,
+                solution: solution,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log(response);
+                // スピナーモーダル非表示
+                alert('Response received!'); // モーダルライブラリやCSSを使用することが推奨されます
+                // ページをリロード
+                window.location.reload();
+                return response.text();
 
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-        } else {
-            alert('API Key doesn\'t saved. Can you set it in the dashboard!');
-        }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
     });
 
     // Cookieから値を取得する関数
